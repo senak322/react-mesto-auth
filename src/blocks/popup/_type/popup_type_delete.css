@@ -1,0 +1,6 @@
+.popup_type_delete {
+  display: flex;
+  opacity: 0;
+  transition: visibility .3s, opacity .3s ease-in;
+  visibility: hidden;
+}

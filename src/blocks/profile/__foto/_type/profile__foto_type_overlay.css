@@ -1,0 +1,27 @@
+.profile__foto_type_overlay {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-right: 30px;
+  position: absolute;
+  top: 0;
+
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: .2s ease-in-out;
+  cursor: pointer;
+  align-self: center;
+}
+
+.profile__foto_type_overlay:hover {
+  opacity: 1;
+}
+
+@media screen and (max-width: 767px) {
+  .profile__foto_type_overlay {
+    margin: 0 0 26px;
+  }
+}

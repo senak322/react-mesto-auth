@@ -1,0 +1,9 @@
+.popup__title_type_add {
+  padding-right: 236px;
+}
+
+@media screen and (max-width: 767px) {
+  .popup__title_type_add {
+    padding-right: 141px;
+  }
+}

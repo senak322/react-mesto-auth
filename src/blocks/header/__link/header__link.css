@@ -1,0 +1,21 @@
+.header__link {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-family: "Inter", Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+}
+
+@media screen and (max-width: 1023px) {
+    .header__link{
+      padding-right: 8%;
+    }
+  }
+  
+  
+  @media screen and (max-width: 767px) {
+    .header__link{
+        font-size: 14px;
+    }
+  }

@@ -1,0 +1,19 @@
+.form__input {
+    max-width: 358px;
+    border: none;
+    border-bottom: 2px solid #CCCCCC;
+    padding-bottom: 12px;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: white;
+    background-color: #000000;
+    margin-top: 30px;
+}
+
+.form__input::placeholder {
+
+    color: #CCCCCC
+}
