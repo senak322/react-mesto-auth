@@ -1,9 +1,16 @@
 import React from 'react';
 import logoHeader from '../pictures/logo__header.svg';
-import { Link } from 'react-router-dom';
+import { Link, useHistory  } from 'react-router-dom';
 
 
 function Header(props) {
+
+  const history = useHistory();
+
+  function signOut() {
+    props.onExit()
+    history.push('/login');
+  }
   return (
     <header className="header">
       <img
@@ -11,7 +18,7 @@ function Header(props) {
         src={logoHeader}
         alt="Место. Белый логотип"
       />
-      <Link to={props.link} className={`header__link ${props.loggedIn ? 'header__link_type_loggedIn' : ''}`}>{props.headerText}</Link>
+      {props.loggedIn ? <button className="header__link header__link_type_loggedIn" onClick={signOut} type="button">{props.headerText}</button> : <Link to={props.link} className="header__link">{props.headerText}</Link>}
 
     </header>
     

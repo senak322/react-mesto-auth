@@ -9,10 +9,11 @@ import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import DeletePopup from './DeletePopup.js';
-import {  Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Login from './Login.js';
 import Register from './Register.js';
 import ProtectedRoute from './ProtectedRoute.js';
+import InfoTooltip from './InfoTooltip.js';
 
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = React.useState(false);
+  const [isInfoPopupOpen, setIsInfoPopupOpen] = React.useState(false);
+  const [isAuthOk, setIsAuthOk] = React.useState();
   const [deletedCard, setDeletedCard] = React.useState({})
   const [selectedCard, setSelectedCard] = React.useState({});
   const [isSelect, setIsSelect] = React.useState(false);
@@ -69,10 +72,10 @@ function App() {
     setSelectedCard({});
     setIsDeletePopupOpen(false);
     setDeletedCard({})
-
+    setIsInfoPopupOpen(false)
   }
 
-  const isOpen = isEditProfilePopupOpen || isAddPlacePopupOpen || isEditAvatarPopupOpen || isDeletePopupOpen || selectedCard.link;
+  const isOpen = isEditProfilePopupOpen || isAddPlacePopupOpen || isEditAvatarPopupOpen || isDeletePopupOpen || selectedCard.link || isInfoPopupOpen;
 
   React.useEffect(() => {
     function closeByEscape(e) {
@@ -138,6 +141,10 @@ function App() {
     setDeletedCard(card);
   }
 
+  function handleHeaderClick() {
+    setLoggedIn(!loggedIn)
+  }
+
 
   return (
     <div className="page">
@@ -146,18 +153,18 @@ function App() {
 
           <CurrentUserContext.Provider value={currentUser}>
 
-            <ProtectedRoute exact path="/" loggedIn={loggedIn}
+            <ProtectedRoute path="/home" loggedIn={loggedIn}
               children={<>
-                <Header link="/login" headerText="Выйти" loggedIn={loggedIn}/>
+                <Header link="/login" headerText="Выйти" loggedIn={loggedIn} onExit={handleHeaderClick} />
                 <Main cards={cards} onCardLike={handleCardLike} onCardDelete={handleDeleteClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} />
                 <Footer />
                 <EditProfilePopup isLoading={isLoading} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
                 <EditAvatarPopup isLoading={isLoading} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
                 <AddPlacePopup isLoading={isLoading} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
                 <DeletePopup isLoading={isLoading} isOpen={isDeletePopupOpen} onClose={closeAllPopups} onDelete={handleCardDelete} card={deletedCard} />
-
-                <ImagePopup isSelect={isSelect} card={selectedCard} onClose={closeAllPopups} /></>}
-            />
+                <ImagePopup isSelect={isSelect} card={selectedCard} onClose={closeAllPopups} />
+                <InfoTooltip isOpen={isInfoPopupOpen} isOk={isAuthOk} onClose={closeAllPopups} /></>}/>
+                
 
 
             <Route path="/register" component={Register}>
@@ -167,6 +174,9 @@ function App() {
             <Route path="/login" component={Login}>
               <Header link="/register" headerText="Регистрация" />
               <Login  />
+            </Route>
+            <Route exact path="/">
+              {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}
             </Route>
           </CurrentUserContext.Provider>
         </Switch>
