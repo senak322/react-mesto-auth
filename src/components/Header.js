@@ -11,6 +11,7 @@ function Header(props) {
     props.onExit()
     history.push('/login');
   }
+
   return (
     <header className="header">
       <img
