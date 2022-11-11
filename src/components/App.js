@@ -9,11 +9,12 @@ import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import DeletePopup from './DeletePopup.js';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import Login from './Login.js';
 import Register from './Register.js';
 import ProtectedRoute from './ProtectedRoute.js';
 import InfoTooltip from './InfoTooltip.js';
+import { getContent } from './auth.js';
 
 
 function App() {
@@ -29,7 +30,9 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [cards, setCards] = React.useState([]);
+  const [userEmail, setUserEmail] = React.useState('');
 
+  const history = useHistory();
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   React.useEffect(() => {
@@ -142,7 +145,8 @@ function App() {
   }
 
   function handleHeaderClick() {
-    setLoggedIn(false)
+    setLoggedIn(false);
+    localStorage.removeItem('token');
   }
 
   function handleRegister(bool) {
@@ -154,6 +158,24 @@ function App() {
     setLoggedIn(true)
   }
 
+  function tokenCheck() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      getContent(token).then(res => {
+        if(res) {
+          setLoggedIn(true);
+          history.push('/home');
+          setUserEmail(res.data.email)
+        }
+      })
+    }
+  }
+
+  React.useEffect( () => {
+    tokenCheck()
+  },
+  [])
+
 
   return (
     <div className="page">
@@ -164,7 +186,7 @@ function App() {
 
           <ProtectedRoute path="/home" loggedIn={loggedIn}
             children={<>
-              <Header link="/login" headerText="Выйти" loggedIn={loggedIn} onExit={handleHeaderClick} />
+              <Header link="/login" headerText="Выйти" loggedIn={loggedIn} onExit={handleHeaderClick} userEmail={userEmail}/>
               <Main cards={cards} onCardLike={handleCardLike} onCardDelete={handleDeleteClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick} />
               <Footer />
               <EditProfilePopup isLoading={isLoading} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
