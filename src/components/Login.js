@@ -7,7 +7,7 @@ function Login(props) {
     return (
         <>
             
-            <Form formTitle="Вход" btnText="Войти" isRegister={false} onLogin={props.onLogin}/>
+            <Form formTitle="Вход" btnText="Войти" isRegister={false} onLogin={props.onLogin} onAuth={props.onAuth}/>
            
         </>
     )
